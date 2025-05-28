@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://developer.hihonor.com/repo' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/grails-core' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url 'https://jitpack.io' }
+        google()
+        maven {
+            url 'https://mirrors.tencent.com/repository/maven/thirdparty/'//腾讯客服需要
+        }
+//        gradlePluginPortal()
+//        maven {
+//            url 'https://mirrors.tencent.com/repository/maven/tencentvideo'
+//            name 'galileoAndroidSDK'
+//        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0"
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://developer.hihonor.com/repo' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/grails-core' }
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://mirrors.tencent.com/nexus/repository/maven-public/" }
+        maven { url 'https://mirrors.huaweicloud.com/repository/maven/' }
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url 'https://jitpack.io' }
+        google()
+//        maven {
+//            url 'https://mirrors.tencent.com/repository/maven/thirdparty/'
+//        }
+//        maven {
+//            url 'https://mirrors.tencent.com/repository/maven/tencentvideo'
+//            name 'galileoAndroidSDK'
+//        }
+    }
+    tasks.withType(JavaCompile).configureEach {
+        // 设置全局编码
+        options.encoding = 'UTF-8'
+    }
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+        options.addStringOption('charset', 'UTF-8')
+    }
+    buildDir = new File(rootDir, "gradle-build/${path.replaceAll(':', '/')}")
+    // 将构建文件统一输出到项目根目录下的 build 文件夹
+//    layout.buildDirectory.set(file("$rootDir/gradle-build/${path.replace(':', '/')}"))
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+

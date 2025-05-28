@@ -1,0 +1,110 @@
+plugins {
+    id 'com.android.application'
+    id("kotlin-android")
+    id("kotlin-parcelize")
+    id("kotlin-kapt")
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+
+android {
+    namespace 'com.example.myapp1'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.myapp1"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        ndk {
+            abiFilters /*"armeabi",*/ "armeabi-v7a",/* "x86",*/ "arm64-v8a"/*, "ARMv8"*/
+        }
+        flavorDimensions "channel"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField("boolean", "IS_DEBUG", "true")
+            buildConfigField("boolean", "IS_PREVIEW", "true")
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                //指定文件输出路径
+                outputFileName = "app1-${variant.name}.apk"
+            }
+    }
+    productFlavors {
+        develop {
+            buildConfigField("boolean", "IS_DEBUG", "true")//是否测试环境
+            buildConfigField("boolean", "IS_PREVIEW", "false")
+            manifestPlaceholders = [CHANNEL_VALUE: "develop"]
+        }
+        product {
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("boolean", "IS_PREVIEW", "false")
+            manifestPlaceholders = [CHANNEL_VALUE: "product"]
+        }
+        preview {
+            buildConfigField("boolean", "IS_DEBUG", "false")
+            buildConfigField("boolean", "IS_PREVIEW", "true")
+            manifestPlaceholders = [CHANNEL_VALUE: "preview"]
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    configurations.all {
+        // 设置依赖的解析策略
+        resolutionStrategy {
+            // 强制使用特定版本的依赖
+            force 'com.alibaba:fastjson:1.2.83'
+            force 'androidx.core:core-ktx:1.7.0'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.core:core:1.5.0'
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation "com.kongzue.dialogx:DialogX:0.0.49"
+    implementation "com.github.cymchad:BaseRecyclerViewAdapterHelper:2.9.34"
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+//    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.github.getActivity:XXPermissions:20.0'
+    implementation 'com.guolindev.permissionx:permissionx:1.8.0'
+//    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+    implementation 'com.orhanobut:hawk:2.0.1'
+    implementation "com.facebook.conceal:conceal:1.1.3@aar"
+    implementation 'com.alibaba:fastjson:1.2.83'
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+}
